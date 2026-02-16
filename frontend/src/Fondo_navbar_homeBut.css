@@ -33,13 +33,13 @@ body {
   display: flex;
   justify-content: space-between; /* Separa els 3 blocs */
   align-items: center;           /* Alinea casa, cerca i login verticalment al centre */
-  padding: 15px 25px;
+  padding: 0px 25px;
   height: 80px;                  /* Una mica més d'altura per respirar */
   background-color: #f4ece1;
   position: relative;
   top: 0;
   z-index: 100;
-  gap: 10px;                     /* Espai mínim entre elements perquè no es toquin */
+  gap: 5px;                     /* Espai mínim entre elements perquè no es toquin */
 }
 
 /*-------------------------------------------------------------------------------------
