@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import './Fondo_navbar_homeBut.css';
 import './header.css';
+import './principal.css';
+
 function App() {
   // 1. Aquí anirà la "memòria" (estat) més endavant
   // Simulem que l'usuari NO està loguejat (false)
@@ -8,6 +10,7 @@ function App() {
   const [isLoggedIn] = useState(false);
  return (
     <div className="mobil-wrapper">
+
       <header className="vacy-header">
         <div className="vacy-logo-container">
           <span className="vacy-letter">V</span>
@@ -19,6 +22,7 @@ function App() {
         </div>
         <p className="vacy-slogan">Ayuda a tu nevera a vaciarse con Vacy</p>
       </header>
+
       <nav className="navbar-superior">
         {/* MIG: El Buscador */}
         <div className="nav-center">
@@ -47,6 +51,7 @@ function App() {
           )}
         </div>
       </nav>
+
       <div className="home-button-circle" onClick={() => window.scrollTo({top: 0, behavior: 'smooth'})}>
         <div className="house-icon">
           <div className="house-roof"></div>
@@ -55,6 +60,29 @@ function App() {
           </div>
         </div>
       </div>
+
+      <main className="vacy-content">
+        {/* BLOC DE BOTONS PRINCIPALS */}
+        <div className="action-buttons-container">
+          <button className="vacy-btn btn-primary">
+            <span>Nueva Receta</span>
+            <small>+ Crear la tuya</small>
+          </button>
+          
+          <button className="vacy-btn btn-secondary">
+            <span>Ayuda Vacy</span>
+            <small>IA Generadora</small>
+          </button>
+        </div>
+
+        {/* LLISTA DE RECEPTES (Scroll) */}
+        <section className="recipes-feed">
+          <h2 className="section-title">Recetas de la comunidad</h2>
+          {/* Aquí aniran les targetes que farem després */}
+          <div className="recipe-placeholder">Proximamente...</div>
+        </section>
+      </main>    
+      
     </div>
   );
 }

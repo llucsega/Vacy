@@ -36,7 +36,7 @@
   /* MIDA I POSICIÓ */
   width: 50px; 
   height: 75px;
-  bottom: -3px; /* Ajusta-ho segons com sigui de grassoneta la vaca */
+  bottom: -4px; /* Ajusta-ho segons com sigui de grassoneta la vaca */
   left: 54%;
   transform: translateX(-50%);
   

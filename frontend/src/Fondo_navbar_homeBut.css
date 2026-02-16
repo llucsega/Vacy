@@ -173,18 +173,31 @@ body {
   background-color: #4b3621;
   border-radius: 50%;
   
-  /* EL SECRET DEL CENTRATGE TOTAL */
   display: flex;
-  justify-content: center; /* Centratge horitzontal */
-  align-items: center;     /* Centratge vertical */
+  justify-content: center;
+  align-items: center;
   
   cursor: pointer;
   z-index: 1000;
   box-shadow: 0px 4px 15px rgba(0,0,0,0.2);
-  transition: transform 0.2s;
+  
+  /* EL CANVI: Afegim aquestes propietats per suavitzar el moviment */
+  transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.2s;
+  backface-visibility: hidden;
+  transform: translateZ(0); 
+  will-change: transform;
 }
+
 .home-button-circle:hover {
-  transform: scale(1.05);
+  /* En lloc de fer-lo només gran, el pugem una mica */
+  transform: scale(1.08) translateY(-3px);
+  box-shadow: 0px 8px 20px rgba(0,0,0,0.3);
+}
+
+.home-button-circle:active {
+  /* Feedback quan cliques */
+  transform: scale(0.95);
+  box-shadow: 0px 2px 5px rgba(0,0,0,0.2);
 }
 
 .house-icon {
