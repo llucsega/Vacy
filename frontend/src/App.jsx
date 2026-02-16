@@ -1,41 +1,51 @@
-import { useState } from 'react'
-import axios from 'axios'
+import { useState } from 'react';
+import './Fondo_navbar_homeBut.css';
 
 function App() {
-  const [ingredients, setIngredients] = useState("")
-  const [receta, setReceta] = useState(null)
-
-  const cuinar = async () => {
-    try {
-      // Recorda que el teu main.py ara està a la carpeta backend/
-      const res = await axios.post('http://localhost:8000/generar-receta', {
-        ingredientes: ingredients.split(",").map(i => i.trim())
-      })
-      setReceta(res.data.receta)
-    } catch (err) {
-      alert("Error connectant amb el Backend. Està encès el main.py dins de /backend?")
-    }
-  }
-
-  return (
-    <div style={{ padding: '20px' }}>
-      <h1>Vacíate 🍳</h1>
-      <input 
-        placeholder="ous, patates..." 
-        value={ingredients} 
-        onChange={(e) => setIngredients(e.target.value)} 
-      />
-      <button onClick={cuinar}>Generar Recepta</button>
-
-      {receta && (
-        <div style={{ marginTop: '20px' }}>
-          <h2>{receta.titulo}</h2>
-          <p><em>{receta.humor}</em></p>
-          <p>{receta.instrucciones}</p>
+  // 1. Aquí anirà la "memòria" (estat) més endavant
+  // Simulem que l'usuari NO està loguejat (false)
+  // Si canvies aquest false per true manualment, veuràs el canvi a la web
+  const [isLoggedIn] = useState(true);
+ return (
+    <div className="mobil-wrapper">
+      <nav className="navbar-superior">
+        {/* MIG: El Buscador */}
+        <div className="nav-center">
+          <div className="search-wrapper">
+            <input 
+              type="text" 
+              placeholder="Buscar..." 
+              className="search-input"
+            />
+            {/* Lupa programada amb CSS */}
+            <div className="search-icon-custom">
+              <div className="lupa-cercle"></div>
+              <div className="lupa-pal"></div>
+            </div>
+          </div>
         </div>
-      )}
+
+        {/* LÒGICA CONDICIONAL: 
+            Si isLoggedIn és cert, mostra el perfil. 
+            Si és fals, mostra els botons d'Acceder/Registro */}
+        <div className="nav-right">
+          {isLoggedIn ? (
+            <div className="perfil-usuario"></div>
+          ) : (
+            <span className="auth-btn highlight">Acceder</span>
+          )}
+        </div>
+      </nav>
+      <div className="home-button-circle" onClick={() => window.scrollTo({top: 0, behavior: 'smooth'})}>
+        <div className="house-icon">
+          <div className="house-roof"></div>
+          <div className="house-body">
+          <div className="house-door"></div>
+          </div>
+        </div>
+      </div>
     </div>
-  )
+  );
 }
 
-export default App
+export default App;

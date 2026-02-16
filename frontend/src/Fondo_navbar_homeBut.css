@@ -1,0 +1,225 @@
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&display=swap');
+
+/* El fons de fora del mòbil (el que veus a l'ordinador) */
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #e0e0e0; /* Un gris clar per contrastar */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* Ocupa tota l'alçada de la finestra */
+}
+
+/* La caixa del mòbil (iPhone 14 approx) */
+.mobil-wrapper {
+  width: 370px;           /* Amplada iPhone 14 */
+  height: 800px;          /* Alçada iPhone 14 */
+  background-color: #f4ece1; /* EL TEU BEIX (Ara és el fons del mòbil) */
+  
+  /* Detalls per semblar un mòbil real */
+  border: 12px solid #333; /* Marc negre del telèfon */
+  border-radius: 40px;    /* Puntes arrodonides */
+  box-shadow: 0px 20px 40px rgba(0,0,0,0.3); /* Ombra per donar volum */
+  
+  overflow: hidden;       /* Perquè res surti de les puntes del mòbil */
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+/*-------------------------------------------------------------------------------------*/
+.navbar-superior {
+  display: flex;
+  justify-content: space-between; /* Separa els 3 blocs */
+  align-items: center;           /* Alinea casa, cerca i login verticalment al centre */
+  padding: 15px 25px;
+  height: 80px;                  /* Una mica més d'altura per respirar */
+  background-color: #f4ece1;
+  position: relative;
+  top: 0;
+  z-index: 100;
+  gap: 10px;                     /* Espai mínim entre elements perquè no es toquin */
+}
+
+/*-------------------------------------------------------------------------------------
+/* Ajustem el contenidor del mig per ocupar l'espai buit */
+.nav-center {
+  flex: 1; 
+  display: flex;
+  justify-content: center; 
+  padding-left: 15px;
+}
+
+.search-wrapper {
+  position: relative; /* Clau per posicionar la lupa a dins */
+  display: flex;
+  align-items: center;
+  background-color: white;
+  border: 1px solid #d1c7bc;
+  border-radius: 20px;
+  width: 100%;
+  max-width: 300px;
+}
+
+.search-input {
+  width: 100%;
+  padding: 10px 40px 10px 15px; /* Deixem 40px a la dreta per la lupa */
+  border: none;
+  background: none;
+  outline: none;
+  font-size: 0.9rem;
+  color: #4b3621;
+}
+
+/* CONTENIDOR DE LA LUPA */
+.search-icon-custom {
+  position: absolute;
+  right: 12px; /* La fixem a la dreta de la barra */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+/* EL CERCLE DE LA LUPA */
+.lupa-cercle {
+  width: 12px;
+  height: 12px;
+  border: 2px solid #4b3621; /* El teu marró */
+  border-radius: 50%;
+  background: transparent;
+}
+
+/* EL PAL DE LA LUPA */
+.lupa-pal {
+  width: 2px;
+  height: 6px;
+  background-color: #4b3621;
+  transform: rotate(-45deg); /* Inclinació típica de la lupa */
+  margin-top: -2px; /* Perquè s'ajunti amb el cercle */
+  margin-left: 10px; /* Desplaçament per la nansa */
+}
+
+/*-------------------------------------------------------------------------------------
+/* Contenidor de la dreta */
+.nav-right {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  min-width: 80px; /* Evita que la barra de cerca el tiri fora */
+  padding-right: 5px;
+}
+
+/* --- ESTAT: NO LOGUEJAT (Botons) --- */
+.auth-btn {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #4b3621; /* El teu marró */
+  cursor: pointer;
+  text-transform: uppercase;
+  transition: opacity 0.2s;
+}
+
+.auth-btn:hover {
+  opacity: 0.7;
+}
+
+.auth-btn.highlight {
+  /* La font que has triat */
+  font-family: 'Dancing Script', cursive; 
+  
+  /* Ajustos perque es vegi clara */
+  font-size: 1.1rem;        /* La pugem una mica perquè és una font fina */
+  font-weight: 700;          /* Li donem gruix perquè destaqui */
+  letter-spacing: 0.5px;
+  text-transform: none;      /* Important: en aquesta font les majúscules no queden tan bé */
+
+  /* El disseny que ja tenies */
+  background-color: #4b3621;
+  color: #f4ece1;
+  padding: 6px 18px;
+  border-radius: 20px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+/* --- ESTAT: LOGUEJAT (Cercle Perfil) --- */
+.perfil-usuario {
+  width: 50px;
+  height: 50px;
+  background-color: #4b3621;
+  border: 2px solid #e5d9c9; /* Marc amb el beix fort de la caseta */
+  border-radius: 50%; /* Rodona perfecta */
+  cursor: pointer;
+  background-image: url('https://via.placeholder.com/40'); /* Placeholder de foto */
+  background-size: cover;
+  transition: transform 0.2s;
+}
+
+.perfil-usuario:hover {
+  transform: scale(1.05);
+}
+
+/*-------------------------------------------------------------------------------------
+/* El cercle contenidor */
+.home-button-circle {
+  position: absolute;
+  bottom: 30px;
+  right: 30px;
+  width: 55px;
+  height: 55px;
+  background-color: #4b3621;
+  border-radius: 50%;
+  
+  /* EL SECRET DEL CENTRATGE TOTAL */
+  display: flex;
+  justify-content: center; /* Centratge horitzontal */
+  align-items: center;     /* Centratge vertical */
+  
+  cursor: pointer;
+  z-index: 1000;
+  box-shadow: 0px 4px 15px rgba(0,0,0,0.2);
+  transition: transform 0.2s;
+}
+.home-button-circle:hover {
+  transform: scale(1.05);
+}
+
+.house-icon {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* Eliminem amplades fixes o marges que puguin moure-la */
+  width: auto;
+  margin: 0; 
+}
+
+.house-roof {
+  width: 0;
+  height: 0;
+  border-left: 13px solid transparent;
+  border-right: 13px solid transparent;
+  border-bottom: 11px solid #f4ece1;
+  /* Mantenim el -1px només perquè no es vegi una ratlla blanca entre sostre i cos */
+  margin-bottom: -1px;
+}
+
+.house-body {
+  width: 20px;
+  height: 13px;
+  background-color: #f4ece1;
+  display: flex;
+  justify-content: center;
+  position: relative;
+}
+
+.house-door {
+  width: 7px;
+  height: 9px;
+  background-color: #4b3621;
+  position: absolute;
+  bottom: 0;
+  border-radius: 2px 2px 0 0;
+}
