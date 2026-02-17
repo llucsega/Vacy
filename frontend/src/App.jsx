@@ -20,7 +20,7 @@ function App() {
           </div>
           <span className="vacy-letter">Y</span>
         </div>
-        <p className="vacy-slogan">Ayuda a tu nevera a vaciarse con Vacy</p>
+        <p className="vacy-slogan">Ayuda a vaciar tu nevera con Vacy</p>
       </header>
 
       <nav className="navbar-superior">
@@ -76,11 +76,23 @@ function App() {
         </div>
 
         {/* LLISTA DE RECEPTES (Scroll) */}
-        <section className="recipes-feed">
-          <h2 className="section-title">Recetas de la comunidad</h2>
-          {/* Aquí aniran les targetes que farem després */}
-          <div className="recipe-placeholder">Proximamente...</div>
-        </section>
+      <section className="recipes-feed">
+        <h2 className="section-title">Recetas de la comunidad</h2>
+        
+        <div className="filter-container">
+          <button className="vacy-filter-btn">
+            <div className="funnel-icon">
+              <div className="funnel-top"></div>
+              <div className="funnel-pipe"></div>
+            </div>
+            <span className="filter-text">FILTROS</span>
+          </button>
+        </div>
+
+        <div className="recipe-placeholder">
+          Proximamente...
+        </div>
+      </section>
       </main>    
       
     </div>
