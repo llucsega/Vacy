@@ -1,13 +1,16 @@
 .vacy-content {
   padding: 10px 20px;
-  flex: 1;
-  overflow-y: auto; /* Permet fer scroll dins del mòbil */
+  overflow: visible !important; 
+  height: auto !important;
+  display: flex;
+  flex-direction: column;
 }
 
 .action-buttons-container {
   display: flex;
   gap: 12px;
-  margin-bottom: 25px;
+  margin-bottom: 5px;
+  margin-top: 20px;
 }
 
 .vacy-btn {

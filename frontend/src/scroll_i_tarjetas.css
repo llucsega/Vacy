@@ -1,0 +1,103 @@
+/* EL MOTOR DE L'SCROLL TOTAL */
+.scrollable-content {
+  width: 100%;
+  height: 100%; /* Ocupa tot l'interior del mobil-wrapper */
+  overflow-y: auto; 
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  
+  /* Millora el lliscament en dispositius tàctils */
+  -webkit-overflow-scrolling: touch;
+  
+  /* Espai extra al final perquè l'última targeta no quedi sota la casa */
+  padding-bottom: 120px; 
+  /* Per a Chrome, Safari i Edge */
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Per a Firefox */
+  scrollbar-width: none;
+
+  /* Per a Internet Explorer i Edge antic */
+  -ms-overflow-style: none;
+}
+
+
+/*-------------------------------------------------------------------------------------
+/* CONTENIDOR DE TARGETES */
+.recipes-scroll-area {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-top: 15px;
+  /* Ens assegurem que no tingui scroll propi */
+  overflow: visible !important;
+  height: auto !important;
+}
+
+/* LA TARGETA */
+.recipe-card {
+  background-color: #fff;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  border: 1px solid #efe5d9;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  cursor: pointer;
+}
+
+.recipe-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(0,0,0,0.12);
+}
+
+/* IMATGE DE LA RECEPTA */
+.recipe-image {
+  height: 140px;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+}
+
+/* ETIQUETA (Sana, Pasta, etc.) */
+.recipe-tag {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background-color: #71351d; 
+  color: #f4ece1;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: bold;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+/* DETALLS DEL TEXT */
+.recipe-details {
+  padding: 15px;
+}
+
+.recipe-details h3 {
+  margin: 0;
+  font-size: 1.1rem;
+  color: #4b3621;
+}
+
+.recipe-details p {
+  font-size: 0.85rem;
+  color: #8d6e63;
+  margin: 8px 0;
+  line-height: 1.4;
+}
+
+/* META DATA (Temps i Persones) */
+.recipe-meta {
+  display: flex;
+  gap: 15px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #71351d;
+}
