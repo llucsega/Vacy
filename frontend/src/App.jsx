@@ -8,7 +8,7 @@ function App() {
   // 1. Aquí anirà la "memòria" (estat) més endavant
   // Simulem que l'usuari NO està loguejat (false)
   // Si canvies aquest false per true manualment, veuràs el canvi a la web
-  const [isLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(true);
  return (
     <div className="mobil-wrapper">
 
@@ -54,10 +54,10 @@ function App() {
           </div>
 
           <div className="nav-right">
-            {isLoggedIn ? (
-              <div className="perfil-usuario"></div>
-            ) : (
-              <span className="auth-btn highlight">Acceder</span>
+            {isLoggedIn ? 
+              (<div className="perfil-usuario"></div>) 
+              : 
+              (<span className="auth-btn highlight">Acceder</span>
             )}
           </div>
         
@@ -96,11 +96,9 @@ function App() {
             <div className="recipes-scroll-area">
               {/* TARGETA 1 */}
               <div className="recipe-card">
-                <div className="recipe-image" style={{backgroundImage: 'url(https://images.unsplash.com/photo-1512621776951-a57141f2eefd?q=80&w=400)'}}>
-                  <span className="recipe-tag">Sana</span>
-                </div>
+                <div className="recipe-image" style={{backgroundImage: 'url(https://images.unsplash.com/photo-1512621776951-a57141f2eefd?q=80&w=400)'}}></div>
                 <div className="recipe-details">
-                  <h3>Amanida de Quinoa i Alvocat</h3>
+                  <h3>WWWWWWWWWWWWW</h3>
                   <p>Fresca, ràpida i plena de nutrients per al dia a dia.</p>
                   <div className="recipe-meta">
                     <span>⏱️ 10 min</span>
@@ -111,9 +109,7 @@ function App() {
 
               {/* TARGETA 2 */}
               <div className="recipe-card">
-                <div className="recipe-image" style={{backgroundImage: 'url(https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=400)'}}>
-                  <span className="recipe-tag">Vacy Choice</span>
-                </div>
+                <div className="recipe-image" style={{backgroundImage: 'url(https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=400)'}}></div>
                 <div className="recipe-details">
                   <h3>Bowl de Salmó i Arròs</h3>
                   <p>La recepta estrella per aprofitar el peix de la nevera.</p>
@@ -126,9 +122,7 @@ function App() {
 
               {/* TARGETA 3 */}
               <div className="recipe-card">
-                <div className="recipe-image" style={{backgroundImage: 'url(https://images.unsplash.com/photo-1473093226795-af9932fe5856?q=80&w=400)'}}>
-                  <span className="recipe-tag">Pasta</span>
-                </div>
+                <div className="recipe-image" style={{backgroundImage: 'url(https://images.unsplash.com/photo-1473093226795-af9932fe5856?q=80&w=400)'}}></div>
                 <div className="recipe-details">
                   <h3>Pasta amb Pesto de Pistatxo</h3>
                   <p>Un gir italià amb ingredients que segur que tens.</p>

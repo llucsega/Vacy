@@ -55,39 +55,26 @@
 
 /* IMATGE DE LA RECEPTA */
 .recipe-image {
-  height: 140px;
+  height: 180px;
   background-size: cover;
   background-position: center;
   position: relative;
 }
 
-/* ETIQUETA (Sana, Pasta, etc.) */
-.recipe-tag {
-  position: absolute;
-  top: 10px;
-  left: 10px;
-  background-color: #71351d; 
-  color: #f4ece1;
-  padding: 4px 12px;
-  border-radius: 20px;
-  font-size: 0.75rem;
-  font-weight: bold;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-}
-
 /* DETALLS DEL TEXT */
 .recipe-details {
-  padding: 15px;
+  padding: 20px;
+  min-height: 120px;
 }
 
 .recipe-details h3 {
   margin: 0;
-  font-size: 1.1rem;
+  font-size: 1.4rem;
   color: #4b3621;
 }
 
 .recipe-details p {
-  font-size: 0.85rem;
+  font-size: 1.1rem;
   color: #8d6e63;
   margin: 8px 0;
   line-height: 1.4;
