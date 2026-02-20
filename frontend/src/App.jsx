@@ -1,8 +1,7 @@
 import { useState } from 'react';
-import './header.css';
 import './principal.css';
 import './scroll_i_tarjetas.css';
-import './main.css';
+import './Main.css';
 
 function App() {
   // 1. Aquí anirà la "memòria" (estat) més endavant
@@ -15,25 +14,6 @@ function App() {
     <div className="mobil-wrapper">
 
       <div className="scrollable-content">
-
-        <header className="vacy-header">
-          
-          <div className="vacy-logo-container">
-            
-            <span className="vacy-letter">V</span>
-            <span className="vacy-letter">A</span>
-            
-            <div className="vacy-letter-c-wrapper">
-              <span className="vacy-letter">C</span>
-            </div>
-            
-            <span className="vacy-letter">Y</span>
-
-          </div>
-        
-        </header>
-
-
 
         <nav className="navbar-superior">
           
