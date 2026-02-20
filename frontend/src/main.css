@@ -1,4 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&display=swap');
+@import "tailwindcss";
+
 
 /* El fons de fora del mòbil (el que veus a l'ordinador) */
 body {

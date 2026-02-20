@@ -1,15 +1,17 @@
 import { useState } from 'react';
-import './Fondo_navbar_homeBut.css';
 import './header.css';
 import './principal.css';
 import './scroll_i_tarjetas.css';
+import './main.css';
 
 function App() {
   // 1. Aquí anirà la "memòria" (estat) més endavant
   // Simulem que l'usuari NO està loguejat (false)
   // Si canvies aquest false per true manualment, veuràs el canvi a la web
   const [isLoggedIn, setIsLoggedIn] = useState(true);
- return (
+ 
+  return(
+  
     <div className="mobil-wrapper">
 
       <div className="scrollable-content">
@@ -17,6 +19,7 @@ function App() {
         <header className="vacy-header">
           
           <div className="vacy-logo-container">
+            
             <span className="vacy-letter">V</span>
             <span className="vacy-letter">A</span>
             
@@ -25,10 +28,8 @@ function App() {
             </div>
             
             <span className="vacy-letter">Y</span>
-          
+
           </div>
-          
-          <p className="vacy-slogan">Ayuda a vaciar tu nevera con Vacy</p>
         
         </header>
 
