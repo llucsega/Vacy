@@ -2,7 +2,7 @@ import React from 'react';
 
 const MobileWrapper = ({ children }) => {
   return (
-    <div className="min-h-screen bg-[#e0e0e0] flex justify-center items-center p-4">
+    <div className="min-h-screen bg-[#5a5555] flex justify-center items-center p-4">
       
       {/* EL MÓVIL (Marc fix) */}
       <div className="w-92.5 h-200 bg-[#f4ece1] border-12 border-[#333] rounded-[40px] shadow-[0px_20px_40px_rgba(0,0,0,0.3)] overflow-hidden relative">

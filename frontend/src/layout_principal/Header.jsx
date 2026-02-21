@@ -34,7 +34,7 @@ const Header = () => {
         {isLoggedIn ? (
           /* ESFERA DE PERFIL */
           <div 
-            className="w-12 h-12 rounded-full bg-[#834b13]/20 border-2 border-[#834b13]/30 flex items-center justify-center cursor-pointer hover:scale-105 transition-transform overflow-hidden"
+            className="w-11 h-11 rounded-full mr-0.5 bg-[#834b13]/20 border-2 border-[#834b13]/30 flex items-center justify-center cursor-pointer hover:scale-105 transition-transform overflow-hidden"
             onClick={() => setIsLoggedIn(false)}
           >
             {/* Lletra inicial o pots posar una <img src="..." /> aquí */}
