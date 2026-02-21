@@ -1,30 +1,3 @@
-/* EL MOTOR DE L'SCROLL TOTAL */
-.scrollable-content {
-  width: 100%;
-  height: 100%; /* Ocupa tot l'interior del mobil-wrapper */
-  overflow-y: auto; 
-  overflow-x: hidden;
-  display: flex;
-  flex-direction: column;
-  
-  /* Millora el lliscament en dispositius tàctils */
-  -webkit-overflow-scrolling: touch;
-  
-  /* Espai extra al final perquè l'última targeta no quedi sota la casa */
-  padding-bottom: 120px; 
-  /* Per a Chrome, Safari i Edge */
-  &::-webkit-scrollbar {
-    display: none;
-  }
-
-  /* Per a Firefox */
-  scrollbar-width: none;
-
-  /* Per a Internet Explorer i Edge antic */
-  -ms-overflow-style: none;
-}
-
-
 /*-------------------------------------------------------------------------------------
 /* CONTENIDOR DE TARGETES */
 .recipes-scroll-area {

@@ -1,35 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&display=swap');
 @import "tailwindcss";
 
-
-/* El fons de fora del mòbil (el que veus a l'ordinador) */
-body {
-  margin: 0;
-  padding: 0;
-  background-color: #e0e0e0; /* Un gris clar per contrastar */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh; /* Ocupa tota l'alçada de la finestra */
-}
-
-/* La caixa del mòbil (iPhone 14 approx) */
-.mobil-wrapper {
-  width: 370px;           /* Amplada iPhone 14 */
-  height: 800px;          /* Alçada iPhone 14 */
-  background-color: #f4ece1; /* EL TEU BEIX (Ara és el fons del mòbil) */
-  
-  /* Detalls per semblar un mòbil real */
-  border: 12px solid #333; /* Marc negre del telèfon */
-  border-radius: 40px;    /* Puntes arrodonides */
-  box-shadow: 0px 20px 40px rgba(0,0,0,0.3); /* Ombra per donar volum */
-  
-  overflow: hidden;       /* Perquè res surti de les puntes del mòbil */
-  position: relative;
-  display: flex;
-  flex-direction: column;
-}
-
 /*-------------------------------------------------------------------------------------*/
 .navbar-superior {
   display: flex;
@@ -162,79 +133,4 @@ body {
 
 .perfil-usuario:hover {
   transform: scale(1.05);
-}
-
-/*-------------------------------------------------------------------------------------
-/* El cercle contenidor */
-.home-button-circle {
-  position: absolute;
-  bottom: 30px;
-  right: 30px;
-  width: 55px;
-  height: 55px;
-  background-color: #4b3621;
-  border-radius: 50%;
-  
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  
-  cursor: pointer;
-  z-index: 1000;
-  box-shadow: 0px 4px 15px rgba(0,0,0,0.2);
-  
-  /* EL CANVI: Afegim aquestes propietats per suavitzar el moviment */
-  transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.2s;
-  backface-visibility: hidden;
-  transform: translateZ(0); 
-  will-change: transform;
-}
-
-.home-button-circle:hover {
-  /* En lloc de fer-lo només gran, el pugem una mica */
-  transform: scale(1.08) translateY(-3px);
-  box-shadow: 0px 8px 20px rgba(0,0,0,0.3);
-}
-
-.home-button-circle:active {
-  /* Feedback quan cliques */
-  transform: scale(0.95);
-  box-shadow: 0px 2px 5px rgba(0,0,0,0.2);
-}
-
-.house-icon {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  /* Eliminem amplades fixes o marges que puguin moure-la */
-  width: auto;
-  margin: 0; 
-}
-
-.house-roof {
-  width: 0;
-  height: 0;
-  border-left: 13px solid transparent;
-  border-right: 13px solid transparent;
-  border-bottom: 11px solid #f4ece1;
-  /* Mantenim el -1px només perquè no es vegi una ratlla blanca entre sostre i cos */
-  margin-bottom: -1px;
-}
-
-.house-body {
-  width: 20px;
-  height: 13px;
-  background-color: #f4ece1;
-  display: flex;
-  justify-content: center;
-  position: relative;
-}
-
-.house-door {
-  width: 7px;
-  height: 9px;
-  background-color: #4b3621;
-  position: absolute;
-  bottom: 0;
-  border-radius: 2px 2px 0 0;
 }
