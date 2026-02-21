@@ -34,7 +34,7 @@ const MobileWrapper = ({ children }) => {
           </div>
 
           {/* 2. NOTIFICACIONS (Campana més estilitzada) */}
-          <div className="cursor-pointer hover:scale-110 transition-transform relative p-2 flex flex-col items-center mt-1">
+          <div className="cursor-pointer hover:scale-110 transition-transform relative p-2 flex flex-col items-center mt-1.5">
             {/* El cos de la campana amb cintura (fent servir rounded i marges) */}
             <div className="w-4 h-3.5 bg-[#f4ece1] rounded-t-full relative">
               {/* El pic de la campana (la boleta de dalt) */}

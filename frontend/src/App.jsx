@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import MobileWrapper from './componentes/MobileWrapper'; 
+import Header from './componentes/Header';
+import Botones_crear_recetas from './componentes/Botones_crear_recetas';
 import './principal.css';
 import './scroll_i_tarjetas.css';
 import './Main.css';
@@ -10,50 +12,10 @@ function App() {
   return(
   
     <MobileWrapper>
+      <Header />
 
-      <nav className="navbar-superior">
-          
-        <div className="nav-center">
-            
-          <div className="search-wrapper">
-            <input 
-              type="text" 
-              placeholder="Buscar..." 
-              className="search-input"/>
-              
-            <div className="search-icon-custom">
-              <div className="lupa-cercle"></div>
-              <div className="lupa-pal"></div>
-            </div>
-            
-          </div>
-          
-        </div>
-
-        <div className="nav-right">
-          {isLoggedIn ? 
-            (<div className="perfil-usuario"></div>) 
-            : 
-            (<span className="auth-btn highlight">Acceder</span>
-          )}
-        </div>
-        
-      </nav>
-
-
-      <main className="vacy-content">
-        {/* BLOC DE BOTONS PRINCIPALS */}
-        <div className="action-buttons-container">
-          <button className="vacy-btn btn-primary">
-            <span>Nueva Receta</span>
-            <small>+ Crear la tuya</small>
-          </button>
-            
-          <button className="vacy-btn btn-secondary">
-            <span>Ayuda Vacy</span>
-            <small>IA Generadora</small>
-          </button>
-        </div>
+      <main className="flex flex-col px-5">
+        <Botones_crear_recetas />
 
         {/* LLISTA DE RECEPTES */}
         <section className="recipes-feed">
