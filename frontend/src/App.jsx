@@ -1,27 +1,31 @@
 import { Routes, Route } from 'react-router-dom'; 
+import { useRef } from 'react';
 
 import MobileWrapper from './layout_principal/MobileWrapper'; 
 import Header from './layout_principal/Header';
+import Navbar_inferior from './layout_principal/buscar/Navbar_inferior';
 import Botones_crear_recetas from './layout_principal/recetas/Botones_crear_recetas';
 import Filtros from './layout_principal/recetas/Filtros';
 
 import './main.css';
 
 function App() {
+  const scrollRef = useRef(null); 
   return (
-    <MobileWrapper>
-      {/* El Header sempre visible */}
-      <Header />
-      
+    <MobileWrapper scrollContainerRef={scrollRef}>
       <Routes>
-        {/* L'única ruta que existeix de veritat ara mateix */}
         <Route path="/" element={
-          <main className="flex flex-col px-4">
-            <Botones_crear_recetas />
-            <Filtros />
-          </main>
-        } />
+          <>
+            <Header />
+            <main className="flex flex-col px-4">
+              <Botones_crear_recetas />
+              <Filtros />
+            </main>
+            <Navbar_inferior scrollContainerRef={scrollRef} />
+          </>
+        }/>
       </Routes>
+    
     </MobileWrapper>
   );
 }
