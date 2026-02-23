@@ -12,7 +12,6 @@ const MobileWrapper = ({ children, scrollContainerRef }) => {
           className="h-full overflow-y-auto scrollbar-none scroll-smooth flex flex-col"
           style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
          >
-          {/* Espaciado inferior para que el contenido no quede tapado por la Navbar */}
           <div className="pb-2"> 
             {children} {/* Aquí se renderiza todo el contenido de la aplicación */}
           </div>

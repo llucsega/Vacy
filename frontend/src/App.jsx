@@ -3,9 +3,9 @@ import { useRef } from 'react';
 
 import MobileWrapper from './layout_principal/MobileWrapper'; 
 import Header from './layout_principal/Header';
-import Navbar_inferior from './layout_principal/buscar/Navbar_inferior';
 import Botones_crear_recetas from './layout_principal/recetas/Botones_crear_recetas';
 import Filtros from './layout_principal/recetas/Filtros';
+import Navbar_inferior from './layout_principal/buscar/Navbar_inferior';
 
 import './main.css';
 
