@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const SearchOverlay = ({ isOpen, onClose }) => {
   const [searchTerm, setSearchTerm] = useState("");
+  const navigate = useNavigate();
 
   // LISTA DE DATOS (MOCK): Simulamos la base de datos. 
   // Cada elemento es un objeto completo con su propia estructura.
@@ -18,10 +20,7 @@ const SearchOverlay = ({ isOpen, onClose }) => {
   const filteredResults = mockData.filter(item =>
     item.nombre.toLowerCase().includes(searchTerm.toLowerCase())
   );
-
-  // Si el componente recibe la orden de estar cerrado, devuelve null (no dibuja nada)
-  if (!isOpen) return null;
-
+  
   return (
     /* CONTENEDOR PRINCIPAL: Ocupa toda la pantalla con el color beige de Vacy y una animación suave */
     <div className="absolute inset-0 bg-[#ddc7aa] z-100 flex flex-col animate-in fade-in duration-300">
@@ -30,7 +29,7 @@ const SearchOverlay = ({ isOpen, onClose }) => {
       <div className="flex items-center gap-4 w-[92%] mx-auto my-4 bg-[#2b1c08] p-3 rounded-full shadow-lg">
         {/* Botón para volver atrás y cerrar el overlay */}
         <button 
-          onClick={onClose} 
+          onClick={() => navigate(-1)} // Navega a la página anterior
           className="text-white/70 hover:text-white transition-colors"
         >
           <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
