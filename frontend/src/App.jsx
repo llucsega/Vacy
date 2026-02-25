@@ -7,6 +7,8 @@ import Botones_crear_recetas from './layout_principal/recetas/Botones_crear_rece
 import Filtros from './layout_principal/recetas/Filtros';
 import Navbar_inferior from './layout_principal/buscar/Navbar_inferior';
 import SearchOverlay from './layout_principal/buscar/SearchOverlay';
+import UsernameModal from './layout_principal/connexion_bd/UsernameModal';
+
 
 import './main.css';
 
