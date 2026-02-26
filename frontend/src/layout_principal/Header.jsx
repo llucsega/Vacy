@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import { supabase } from './connexion_bd/supabaseClient.js';
 
 const Header = () => {
-  
   const [user, setUser] = useState(null);
 
   useEffect(() => {
@@ -26,7 +25,8 @@ const Header = () => {
   }, []);
 
   return (
-    <header className="w-full px-6 pt-6 pb-2 flex items-center gap-3">
+    
+    <header className="relative z-40 w-full px-6 pt-6 pb-2 flex items-center gap-3">
       
       {/* 1. LOGO VACY */}
       <div 
@@ -58,15 +58,23 @@ const Header = () => {
       <div className="flex items-center justify-end min-w-16.25">
         {user ? (
           <div 
-            className="w-11 h-11 rounded-full mr-0.5 bg-[#834b13]/20 border-2 border-[#834b13]/30 flex items-center justify-center cursor-pointer hover:scale-105 transition-transform overflow-hidden"
-            // logout real
+            className="w-11 h-11 rounded-full mr-0.5 bg-[#834b13]/20 border-2 border-[#834b13]/30 flex items-center justify-center cursor-pointer hover:scale-105 transition-transform overflow-hidden shadow-sm"
             onClick={async () => {
               await supabase.auth.signOut();
             }}
           >
-            {/* Bonus: Posem la foto real si Google ens la dóna */}
-            {user.user_metadata?.avatar_url ? (
-              <img src={user.user_metadata.avatar_url} alt="Avatar" className="w-full h-full object-cover" />
+            {/* Verifiquem la URL de la imatge de Google */}
+            {user.user_metadata?.avatar_url || user.user_metadata?.picture ? (
+              <img 
+                src={user.user_metadata.avatar_url || user.user_metadata.picture} 
+                alt="Avatar" 
+                className="w-full h-full object-cover"
+                onError={(e) => {
+                  // Si la imatge falla, posem una inicial
+                  e.target.style.display = 'none';
+                  e.target.parentElement.innerHTML = `<span class="text-[#834b13] font-bold text-xs">${user.user_metadata?.full_name?.charAt(0) || "U"}</span>`;
+                }}
+              />
             ) : (
               <span className="text-[#834b13] font-bold text-xs">
                 {user.user_metadata?.full_name?.charAt(0) || "U"}
@@ -76,13 +84,10 @@ const Header = () => {
         ) : (
           <button 
             className="text-[#4b3621] font-semibold text-sm hover:opacity-70 transition-opacity whitespace-nowrap"
-            // "Acceder" obra Google login real
             onClick={async () => {
               await supabase.auth.signInWithOAuth({
                 provider: 'google',
-                options: {
-                  redirectTo: window.location.origin
-                }
+                options: { redirectTo: window.location.origin }
               });
             }}
           >

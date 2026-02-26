@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { supabase } from './supabaseClient.js';
+import triaUsernameImg from '../../assets/username_vacy.png';
 
 export default function UsernameModal({ profile, onComplete }) {
   const [username, setUsername] = useState("");
@@ -30,60 +31,52 @@ export default function UsernameModal({ profile, onComplete }) {
   };
 
   return (
-    <div className="absolute inset-0 bg-[#3a2d22]/90 backdrop-blur-md flex items-center justify-center z-9999 p-4 rounded-[inherit]">
-      <div className="bg-[#f5f0e8] rounded-[40px] p-8 max-w-[90%] w-full shadow-2xl border-4 border-[#6b4f3a] flex flex-col items-center relative overflow-hidden">
+    <div className="absolute inset-0 backdrop-brightness-75 flex items-center justify-center z-9999 rounded-[inherit] overflow-hidden">
+      
+      <div className="relative w-full h-full flex items-center justify-center p-6">
         
-        {/* Títol estil Vacy */}
-        <h2 className="text-3xl font-black text-[#6b4f3a] mb-6 text-center leading-tight">
-          ¡CASI ESTAMOS! <br/> <span className="text-xl font-medium opacity-80">Elige tu nombre de usuario</span>
-        </h2>
+        <img 
+          src={triaUsernameImg} 
+          alt="Escena Vacy"
+          className="absolute w-full h-auto max-h-[85%] object-contain pointer-events-none" 
+        />
 
-        {/* Input Central */}
-        <div className="w-full mb-10">
-          <input 
-            type="text" 
-            placeholder="ej: cheflucas"
-            className="w-full p-5 rounded-2xl border-b-8 border-r-8 border-2 border-[#6b4f3a] text-2xl font-bold text-[#6b4f3a] outline-none bg-white placeholder:opacity-20 transition-all focus:translate-x-1 focus:translate-y-1 focus:border-b-4 focus:border-r-4"
-            value={username}
-            onChange={(e) => {
-              setError("");
-              setUsername(e.target.value.toLowerCase().replace(/[^a-z0-9_]/g, ""));
-            }}
-          />
-          {error && <p className="text-red-500 font-bold mt-2 text-center">{error}</p>}
+        {/* LA CAPSA DE FUSTA "VACY STYLE" */}
+        <div className="absolute top-[61%] left-1/2 transform -translate-x-1/2 flex items-center h-18 w-full max-w-[320px] bg-[#3a2d22] p-2 rounded-[30px_15px_40px_20px] border-b-12 border-[#251c15] overflow-hidden shadow-lg"
+          style={{
+            backgroundColor: '#3a2d22',
+            backgroundImage: 'linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px), linear-gradient(0deg, rgba(0,0,0,0.1) 1px, transparent 1px)',
+            backgroundSize: '20px 4px'
+          }}
+        >
+    
+          {/* Zona d'escriptura (Fusta clara) */}
+          <div className="translate-y-0.75 translate-x-0.75 grow bg-[#f5f0e8] rounded-xl flex items-center px-4 py-2 shadow-[inset_0_4px_8px_rgba(0,0,0,0.5)]">
+            <input 
+              type="text" 
+              placeholder="nombre_de_usuario"
+              className="w-full bg-transparent text-[#3a2d22] font-black text-xl outline-none placeholder:text-[#3a2d22]/20"
+              value={username}
+              onChange={(e) => {
+                setError(""); // Neteja l'error quan l'usuari torna a escriure
+                // Regex: Converteix a minúscules i elimina tot el que no sigui lletra a-z, número 0-9 o _
+                const filteredValue = e.target.value
+                  .toLowerCase()
+                  .replace(/[^a-z0-9_]/g, "");
+                setUsername(filteredValue);
+              }}
+            />
+          </div>
+
+          {/* El botó ">" (Integrat a la fusta fosca) */}
+          <button 
+            onClick={handleFinish}
+            disabled={loading}
+            className="px-5 text-[#f5f0e8] font-black text-3xl hover:scale-110 active:scale-95 transition-all disabled:opacity-50"
+          >
+            {loading ? "..." : ">"}
+          </button>
         </div>
-
-        {/* Zona de Mascotes i Missatges */}
-        <div className="flex justify-between items-end w-full gap-2 relative h-32">
-          
-          {/* Vacy Esquerra (L'Explicador) */}
-          <div className="flex flex-col items-center w-1/3 group">
-             <div className="bg-white p-2 rounded-xl text-[11px] font-bold border-2 border-[#6b4f3a] mb-2 shadow-sm animate-bounce">
-               "Es como tu DNI de chef"
-             </div>
-             <div className="text-6xl drop-shadow-md cursor-pointer transition-transform hover:scale-110">🥑</div>
-          </div>
-
-          {/* Botó "Listo" al mig */}
-          <div className="flex flex-col items-center mb-4">
-            <button 
-                onClick={handleFinish}
-                disabled={loading || !username}
-                className="bg-[#6b4f3a] text-[#f5f0e8] px-8 py-4 rounded-2xl font-black text-xl border-b-4 border-[#3a2d22] active:translate-y-1 active:border-b-0 disabled:opacity-30 disabled:grayscale transition-all"
-            >
-                {loading ? "GUARDANDO..." : "¡LISTO!"}
-            </button>
-          </div>
-
-          {/* Vacy Dreta (El de les regles) */}
-          <div className="flex flex-col items-center w-1/3">
-             <div className="bg-white p-2 rounded-xl text-[11px] font-bold border-2 border-[#6b4f3a] mb-2 shadow-sm leading-tight text-center">
-               "Minúsculas y todo junto"
-             </div>
-             <div className="text-6xl drop-shadow-md cursor-pointer transition-transform hover:rotate-12">🗿</div>
-          </div>
-        </div>
-
       </div>
     </div>
   );
