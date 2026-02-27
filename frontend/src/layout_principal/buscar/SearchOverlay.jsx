@@ -59,7 +59,7 @@ const SearchOverlay = () => {
           {searchTerm.length > 0 && (
             <button 
               onClick={() => setSearchTerm("")}
-              className="text-white/60 hover:text-white transition-colors flex-shrink-0"
+              className="text-white/60 hover:text-white transition-colors shrink-0"
             >
               <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                 <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
@@ -81,7 +81,7 @@ const SearchOverlay = () => {
                 key={item.id} 
                 className="flex items-center gap-4 p-4 bg-white/40 border border-[#5b3f1a]/5 rounded-2xl active:scale-[0.98] transition-all"
               >
-                <div className="w-12 h-12 rounded-full bg-[#5b3f1a] flex items-center justify-center font-bold text-[#f4ece1] shadow-md flex-shrink-0">
+                <div className="w-12 h-12 rounded-full bg-[#5b3f1a] flex items-center justify-center font-bold text-[#f4ece1] shadow-md shrink-0">
                   {item.avatar || item.icon}
                 </div>
                 <div className="min-w-0">

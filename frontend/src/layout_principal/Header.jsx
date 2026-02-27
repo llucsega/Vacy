@@ -1,31 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { supabase } from './connexion_bd/supabaseClient.js';
+import { useAuth } from '../context/AuthContext'; 
 
 const Header = () => {
-  const [user, setUser] = useState(null);
-
-  useEffect(() => {
-    const getSession = async () => {
-      const { data } = await supabase.auth.getSession();
-      setUser(data.session?.user ?? null);
-    };
-
-    getSession();
-
-    const { data: listener } = supabase.auth.onAuthStateChange(
-      (_event, session) => {
-        setUser(session?.user ?? null);
-      }
-    );
-
-    return () => {
-      listener.subscription.unsubscribe();
-    };
-  }, []);
+  // 2. Agafem el que necessitem del "cor" de l'app
+  const { user, profile } = useAuth(); 
 
   return (
-    
     <header className="relative z-40 w-full px-6 pt-6 pb-2 flex items-center gap-3">
       
       {/* 1. LOGO VACY */}
@@ -63,14 +45,12 @@ const Header = () => {
               await supabase.auth.signOut();
             }}
           >
-            {/* Verifiquem la URL de la imatge de Google */}
             {user.user_metadata?.avatar_url || user.user_metadata?.picture ? (
               <img 
                 src={user.user_metadata.avatar_url || user.user_metadata.picture} 
                 alt="Avatar" 
                 className="w-full h-full object-cover"
                 onError={(e) => {
-                  // Si la imatge falla, posem una inicial
                   e.target.style.display = 'none';
                   e.target.parentElement.innerHTML = `<span class="text-[#834b13] font-bold text-xs">${user.user_metadata?.full_name?.charAt(0) || "U"}</span>`;
                 }}
@@ -87,7 +67,10 @@ const Header = () => {
             onClick={async () => {
               await supabase.auth.signInWithOAuth({
                 provider: 'google',
-                options: { redirectTo: window.location.origin }
+                options: { 
+                    redirectTo: window.location.origin,
+                    queryParams: { prompt: 'select_account' } // El "bonus" que vam dir!
+                }
               });
             }}
           >

@@ -1,6 +1,6 @@
 import { Routes, Route } from 'react-router-dom'; 
-import { useRef, useState, useEffect } from 'react';
-import { supabase } from './layout_principal/connexion_bd/supabaseClient';
+import { useRef } from 'react';
+import { useAuth } from './context/AuthContext'; 
 
 import MobileWrapper from './layout_principal/MobileWrapper'; 
 import UsernameModal from './layout_principal/connexion_bd/UsernameModal';
@@ -14,42 +14,26 @@ import './main.css';
 
 function App() {
   const scrollRef = useRef(null); 
-  const [session, setSession] = useState(null);
-  const [profile, setProfile] = useState(null);
+  
+  // Recuperem la info de l'AuthContext. 
+  const { session, profile, setProfile } = useAuth();
 
-  // 1. Escoltem la sessió de Supabase
-  useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session);
-      if (session) fetchProfile(session.user.id);
-    });
-
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      setSession(session);
-      if (session) fetchProfile(session.user.id);
-      else setProfile(null);
-    });
-
-    return () => subscription.unsubscribe();
-  }, []);
-
-  // 2. Funció per portar les dades de la taula 'profiles'
-  const fetchProfile = async (userId) => {
-    const { data } = await supabase
-      .from('profiles')
-      .select('*')
-      .eq('id', userId)
-      .single();
-    setProfile(data);
-  };
   return (
     <MobileWrapper scrollContainerRef={scrollRef}>
+      
+      {/* 3. El modal només surt si hi ha sessió però no està configurat */}
       {session && profile && !profile.is_setup && (
         <UsernameModal 
           profile={profile} 
-          onComplete={() => fetchProfile(session.user.id)} 
+          // Quan acabi, actualitzem el perfil al context
+          onComplete={() => {
+            // Aquesta petita funció actualitza el "profile" global
+            // perquè el modal desaparegui a l'instant.
+            setProfile({ ...profile, is_setup: true });
+          }} 
         />
       )}
+
       <Routes>
         <Route path="/" element={
           <>
@@ -62,12 +46,7 @@ function App() {
           </>
         }/>
 
-        <Route path="/buscar" element={
-          <>
-            <SearchOverlay />
-          </>
-        }/>
-        
+        <Route path="/buscar" element={<SearchOverlay />}/>
       </Routes>
     
     </MobileWrapper>
