@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { supabase } from './connexion_bd/supabaseClient.js';
-import { useAuth } from '../context/AuthContext'; 
+import { supabase } from '../../servicios/supabaseClient.js';
+import { useAuth } from '../../infraestructura/autenticacion/ContextoAutenticacion.jsx'; 
 
 const Header = () => {
   // 2. Agafem el que necessitem del "cor" de l'app

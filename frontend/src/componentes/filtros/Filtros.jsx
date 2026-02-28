@@ -1,5 +1,5 @@
 import React from 'react';
-import RecipeCard from './RecipeCard';
+import RecipeCard from '../recetas/TarjetaReceta';
 
 const Filtros = () => {
   // MOCKDATA AMB ESTRUCTURA RECOMANADA

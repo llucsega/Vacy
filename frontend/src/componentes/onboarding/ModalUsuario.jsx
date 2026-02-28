@@ -1,7 +1,9 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { supabase } from './supabaseClient.js';
+import { supabase } from '../../servicios/supabaseClient.js';
 import triaUsernameImg from '../../assets/username_vacy.png';
+
+import { validateUsername } from '../../compartido/utilidades/validarUsuario.js';
 
 export default function UsernameModal({ profile, onComplete }) {
   const [username, setUsername] = useState("");
@@ -33,15 +35,9 @@ export default function UsernameModal({ profile, onComplete }) {
       return;
     }
 
-    // 2. VALIDACIÓ AMB REGEX
-    const validRegex = /^[a-z0-9_]{3,}$/;
-    
-    if (!validRegex.test(username)) {
-      if (username.length < 3) {
-        setError("Mínimo 3 caracteres.");
-      } else {
-        setError("Solo letras, números o guiones bajos.");
-      }
+    const { isValid, message } = validateUsername(username);
+    if (!isValid) {
+      setError(message);
       return;
     }
 
@@ -49,7 +45,6 @@ export default function UsernameModal({ profile, onComplete }) {
     setError("");
 
     try {
-      // MILLORA "PARANOIA PRO": Afegim .select().single() per confirmar que la DB ha escrit bé
       const { data, error: updateError } = await supabase
         .from('profiles')
         .update({ 
@@ -68,7 +63,6 @@ export default function UsernameModal({ profile, onComplete }) {
           setError("Hubo un error. Inténtalo de nuevo.");
         }
       } else if (data) {
-        // Confirmem que tenim 'data' de tornada abans de tancar
         onComplete(username); 
         navigate('/'); 
       }
@@ -89,7 +83,6 @@ export default function UsernameModal({ profile, onComplete }) {
           className="absolute w-full h-auto max-h-[85%] object-contain pointer-events-none" 
         />
 
-        {/* LA CAPSA DE FUSTA "VACY STYLE" */}
         <div className="absolute top-[61%] left-1/2 transform -translate-x-1/2 flex items-center h-18 w-full max-w-[320px] bg-[#3a2d22] p-2 rounded-[30px_15px_40px_20px] border-b-12 border-[#251c15] overflow-hidden shadow-lg"
           style={{
             backgroundColor: '#3a2d22',
@@ -97,9 +90,7 @@ export default function UsernameModal({ profile, onComplete }) {
             backgroundSize: '20px 4px'
           }}
         >
-    
           <div className={`translate-y-0.75 translate-x-0.75 grow bg-[#f5f0e8] rounded-xl flex items-center px-4 py-2 shadow-[inset_0_4px_8px_rgba(0,0,0,0.5)] transition-all duration-300 ${error ? 'ring-4 ring-red-500/50' : ''}`}>
-            
             <input 
               type="text" 
               placeholder="nombre_de_usuario"
@@ -129,7 +120,6 @@ export default function UsernameModal({ profile, onComplete }) {
             {error}
           </div>
         )}
-
       </div>
     </div>
   );
