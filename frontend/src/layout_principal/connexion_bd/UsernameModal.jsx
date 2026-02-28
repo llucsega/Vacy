@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom'; // 1. Importem el navegador
+import { useNavigate } from 'react-router-dom';
 import { supabase } from './supabaseClient.js';
 import triaUsernameImg from '../../assets/username_vacy.png';
 
@@ -7,22 +7,19 @@ export default function UsernameModal({ profile, onComplete }) {
   const [username, setUsername] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const navigate = useNavigate(); // 2. Inicialitzem el hook
+  const navigate = useNavigate();
 
   useEffect(() => {
-    // Bloqueig de scroll estàndard
     const originalOverflow = document.body.style.overflow;
     const originalHeight = document.body.style.height;
     
     document.body.style.overflow = 'hidden';
     document.body.style.height = '100vh';
 
-    // Funció per bloquejar el moviment tàctil (per a iOS i navegadors mòbils)
     const preventDefault = (e) => e.preventDefault();
     document.addEventListener('touchmove', preventDefault, { passive: false });
 
     return () => {
-      // Restaurar tot en sortir
       document.body.style.overflow = originalOverflow;
       document.body.style.height = originalHeight;
       document.removeEventListener('touchmove', preventDefault);
@@ -30,44 +27,61 @@ export default function UsernameModal({ profile, onComplete }) {
   }, []);
 
   const handleFinish = async () => {
-    if (username.length < 3) {
-      setError("Mínimo 3 caracteres");
+    // 1. BLINDATGE DE SEGURETAT
+    if (!profile?.id) {
+      setError("Error de sesión. Inténtalo de nuevo.");
       return;
     }
+
+    // 2. VALIDACIÓ AMB REGEX
+    const validRegex = /^[a-z0-9_]{3,}$/;
+    
+    if (!validRegex.test(username)) {
+      if (username.length < 3) {
+        setError("Mínimo 3 caracteres.");
+      } else {
+        setError("Solo letras, números o guiones bajos.");
+      }
+      return;
+    }
+
     setLoading(true);
     setError("");
 
-    const { error: updateError } = await supabase
-      .from('profiles')
-      .update({ 
-        username: username, 
-        is_setup: true,
-        updated_at: new Date().toISOString()
-      })
-      .eq('id', profile.id);
+    try {
+      // MILLORA "PARANOIA PRO": Afegim .select().single() per confirmar que la DB ha escrit bé
+      const { data, error: updateError } = await supabase
+        .from('profiles')
+        .update({ 
+          username: username, 
+          is_setup: true,
+          updated_at: new Date().toISOString()
+        })
+        .eq('id', profile.id)
+        .select()
+        .single();
 
-    if (updateError) {
-      if (updateError.code === '23505') {
-        setError("Nombre de usuario en uso. Prueba con otro.");
-      } else {
-        setError("Hubo un error. Inténtalo de nuevo.");
+      if (updateError) {
+        if (updateError.code === '23505') {
+          setError("Nombre de usuario en uso. Prueba con otro.");
+        } else {
+          setError("Hubo un error. Inténtalo de nuevo.");
+        }
+      } else if (data) {
+        // Confirmem que tenim 'data' de tornada abans de tancar
+        onComplete(username); 
+        navigate('/'); 
       }
+    } catch (err) {
+      setError("Error inesperado.");
+    } finally {
       setLoading(false);
-    } else {
-      // 3. Primer executem la lògica de completar (per actualitzar el context)
-      onComplete(); 
-      
-      // 4. I enviem l'usuari a la Home (o on vulguis)
-      // Ara el ProtectedRoute ja el deixarà passar perquè is_setup serà true
-      navigate('/'); 
     }
   };
 
   return (
-    // He canviat "absolute" per "fixed" per assegurar que tapi tota la pantalla 
-    // i he tret el "rounded-[inherit]" per coherència amb una pàgina completa
     <div className="absolute inset-0 backdrop-brightness-50 flex items-center justify-center z-9999 overflow-hidden touch-none">
-      <div className="relative w-full h-full flex items-center justify-center p-6 -translate-y-40">
+      <div className="relative w-full h-full flex items-center justify-center p-6 -translate-y-30">
         
         <img 
           src={triaUsernameImg} 
