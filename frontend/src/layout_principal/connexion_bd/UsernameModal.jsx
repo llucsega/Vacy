@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom'; // 1. Importem el navegador
 import { supabase } from './supabaseClient.js';
 import triaUsernameImg from '../../assets/username_vacy.png';
 
@@ -6,6 +7,27 @@ export default function UsernameModal({ profile, onComplete }) {
   const [username, setUsername] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const navigate = useNavigate(); // 2. Inicialitzem el hook
+
+  useEffect(() => {
+    // Bloqueig de scroll estàndard
+    const originalOverflow = document.body.style.overflow;
+    const originalHeight = document.body.style.height;
+    
+    document.body.style.overflow = 'hidden';
+    document.body.style.height = '100vh';
+
+    // Funció per bloquejar el moviment tàctil (per a iOS i navegadors mòbils)
+    const preventDefault = (e) => e.preventDefault();
+    document.addEventListener('touchmove', preventDefault, { passive: false });
+
+    return () => {
+      // Restaurar tot en sortir
+      document.body.style.overflow = originalOverflow;
+      document.body.style.height = originalHeight;
+      document.removeEventListener('touchmove', preventDefault);
+    };
+  }, []);
 
   const handleFinish = async () => {
     if (username.length < 3) {
@@ -13,18 +35,18 @@ export default function UsernameModal({ profile, onComplete }) {
       return;
     }
     setLoading(true);
-    setError(""); // Netegem errors previs
+    setError("");
 
     const { error: updateError } = await supabase
       .from('profiles')
       .update({ 
         username: username, 
-        is_setup: true 
+        is_setup: true,
+        updated_at: new Date().toISOString()
       })
       .eq('id', profile.id);
 
     if (updateError) {
-      // AQUÍ ESTÀ LA CLAU: Mirem el codi d'error de Postgres
       if (updateError.code === '23505') {
         setError("Nombre de usuario en uso. Prueba con otro.");
       } else {
@@ -32,13 +54,20 @@ export default function UsernameModal({ profile, onComplete }) {
       }
       setLoading(false);
     } else {
+      // 3. Primer executem la lògica de completar (per actualitzar el context)
       onComplete(); 
+      
+      // 4. I enviem l'usuari a la Home (o on vulguis)
+      // Ara el ProtectedRoute ja el deixarà passar perquè is_setup serà true
+      navigate('/'); 
     }
   };
 
   return (
-    <div className="absolute inset-0 backdrop-brightness-75 flex items-center justify-center z-9999 rounded-[inherit] overflow-hidden">
-      <div className="relative w-full h-full flex items-center justify-center p-6">
+    // He canviat "absolute" per "fixed" per assegurar que tapi tota la pantalla 
+    // i he tret el "rounded-[inherit]" per coherència amb una pàgina completa
+    <div className="absolute inset-0 backdrop-brightness-50 flex items-center justify-center z-9999 overflow-hidden touch-none">
+      <div className="relative w-full h-full flex items-center justify-center p-6 -translate-y-40">
         
         <img 
           src={triaUsernameImg} 
@@ -55,7 +84,6 @@ export default function UsernameModal({ profile, onComplete }) {
           }}
         >
     
-          {/* Zona d'escriptura (Fusta clara) amb la CLASSE CONDICIONAL arreglada */}
           <div className={`translate-y-0.75 translate-x-0.75 grow bg-[#f5f0e8] rounded-xl flex items-center px-4 py-2 shadow-[inset_0_4px_8px_rgba(0,0,0,0.5)] transition-all duration-300 ${error ? 'ring-4 ring-red-500/50' : ''}`}>
             
             <input 
@@ -82,7 +110,6 @@ export default function UsernameModal({ profile, onComplete }) {
           </button>
         </div>
 
-        {/* RECOMANACIÓ: Posa el text de l'error també perquè es vegi què passa */}
         {error && (
           <div className="absolute top-[72%] bg-red-800 text-white px-4 py-1 rounded-full text-xs font-bold shadow-lg">
             {error}

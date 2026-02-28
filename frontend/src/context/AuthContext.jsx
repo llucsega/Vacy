@@ -6,10 +6,13 @@ const AuthContext = createContext({});
 export const AuthProvider = ({ children }) => {
   const [session, setSession] = useState(null);
   const [profile, setProfile] = useState(null);
-  const [loading, setLoading] = useState(true);
+  
+  // MILLORA: Separem els tipus de càrrega
+  const [initialized, setInitialized] = useState(false); // S'ha comprovat la sessió inicial?
+  const [profileLoading, setProfileLoading] = useState(false); // S'estan descarregant les dades del perfil?
 
-  // 1. Funció per buscar el perfil a la base de dades
   const fetchProfile = async (userId) => {
+    setProfileLoading(true); // Comença la càrrega específica del perfil
     try {
       const { data, error } = await supabase
         .from('profiles')
@@ -21,43 +24,53 @@ export const AuthProvider = ({ children }) => {
       setProfile(data);
     } catch (err) {
       console.error("Error carregant el perfil:", err);
+      setProfile(null); // <--- MILLORA DEL JEFE: Si falla, ens assegurem que el perfil estigui buit
     } finally {
-      setLoading(false);
+      setProfileLoading(false); // Acaba la càrrega del perfil
+      setInitialized(true);     // Un cop tenim el perfil (o l'error), l'app ja està inicialitzada
     }
   };
 
   useEffect(() => {
-    // 2. Comprovar si ja hi ha una sessió activa en carregar la web
+    // Comprovar sessió inicial
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
       if (session) {
         fetchProfile(session.user.id);
       } else {
-        setLoading(false);
+        setInitialized(true); // Si no hi ha sessió, l'app ja està llesta
       }
     });
 
-    // 3. L'ÚNIC "listener" de tota l'app que escolta canvis de sessió
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       setSession(session);
       if (session) {
+        // EL DETALL PRO: Reiniciem initialized a false mentre busquem el nou perfil
+        setInitialized(false); 
         fetchProfile(session.user.id);
       } else {
         setProfile(null);
-        setLoading(false);
+        setInitialized(true);
       }
     });
 
     return () => subscription.unsubscribe();
   }, []);
 
-  // 4. Compartim tota aquesta info amb la resta de l'app
+  // Compartim tota aquesta info amb la resta de l'app
   return (
-    <AuthContext.Provider value={{ session, user: session?.user, profile, loading, setProfile }}>
+    <AuthContext.Provider value={{ 
+      session, 
+      user: session?.user, 
+      profile, 
+      loading: !initialized, // "loading" ara només és TRUE fins que l'app arrenca del tot
+      profileLoading,        // Per si vols posar un spinner petit a la web sense bloquejar-ho tot
+      setProfile 
+    }}>
       {children}
     </AuthContext.Provider>
   );
 };
 
-// 5. El "hook" per fer-ho servir fàcilment a qualsevol component
+// El "hook" per fer-ho servir fàcilment a qualsevol component
 export const useAuth = () => useContext(AuthContext);
