@@ -1,15 +1,12 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { supabase } from '../../servicios/supabaseClient.js';
 import triaUsernameImg from '../../assets/username_vacy.png';
-
 import { validateUsername } from '../../compartido/utilidades/validarUsuario.js';
 
 export default function UsernameModal({ profile, onComplete }) {
   const [username, setUsername] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const navigate = useNavigate();
 
   useEffect(() => {
     const originalOverflow = document.body.style.overflow;
@@ -29,7 +26,6 @@ export default function UsernameModal({ profile, onComplete }) {
   }, []);
 
   const handleFinish = async () => {
-    // 1. BLINDATGE DE SEGURETAT
     if (!profile?.id) {
       setError("Error de sesión. Inténtalo de nuevo.");
       return;
@@ -50,7 +46,6 @@ export default function UsernameModal({ profile, onComplete }) {
         .update({ 
           username: username, 
           is_setup: true,
-          updated_at: new Date().toISOString()
         })
         .eq('id', profile.id)
         .select()
@@ -63,8 +58,7 @@ export default function UsernameModal({ profile, onComplete }) {
           setError("Hubo un error. Inténtalo de nuevo.");
         }
       } else if (data) {
-        onComplete(username); 
-        navigate('/'); 
+        onComplete(data);  
       }
     } catch (err) {
       setError("Error inesperado.");

@@ -18,16 +18,24 @@ export const AuthProvider = ({ children }) => {
         .from('profiles')
         .select('*')
         .eq('id', userId)
-        .single();
+        .maybeSingle(); // 🛡️ MILLORA: No peta si no hi ha fila, retorna null
       
       if (error) throw error;
-      setProfile(data);
+
+      // Si data és null, el perfil encara no s'ha creat a la DB
+      if (!data) {
+        console.warn("Sessió activa però perfil no trobat a la base de dades.");
+        setProfile(null);
+      } else {
+        setProfile(data);
+      }
+      
     } catch (err) {
       console.error("Error carregant el perfil:", err);
-      setProfile(null); // <--- MILLORA DEL JEFE: Si falla, ens assegurem que el perfil estigui buit
+      setProfile(null); // 🔴 MILLORA: Netegem l'estat si hi ha un error crític
     } finally {
       setProfileLoading(false); // Acaba la càrrega del perfil
-      setInitialized(true);     // Un cop tenim el perfil (o l'error), l'app ja està inicialitzada
+      setInitialized(true);     // L'app ja sap qui ets (o que no et troba)
     }
   };
 

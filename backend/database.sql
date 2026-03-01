@@ -96,3 +96,66 @@ begin
   return new;
 end;
 $$ language plpgsql security definer;
+
+
+----------------------------------------------------------------------------- 
+
+
+-- Creem la funció que posa la data actual
+create or replace function public.update_updated_at_column()
+returns trigger as $$
+begin
+    new.updated_at = now();
+    return new;
+end;
+$$ language plpgsql;
+
+-- Eliminem el trigger si ja existia per no duplicar
+drop trigger if exists set_updated_at on public.profiles;
+
+-- Creem el trigger que s'executa ABANS de qualsevol UPDATE
+create trigger set_updated_at
+before update on public.profiles
+for each row
+execute procedure public.update_updated_at_column();
+
+
+----------------------------------------------------------------------------- 
+
+
+-- 1. Eliminem la política antiga "oberta"
+drop policy if exists "Els perfils són visibles per a tothom" on public.profiles;
+
+-- 2. Creem la nova política restringida a usuaris loguejats
+create policy "Perfils visibles només per a usuaris autenticats"
+on public.profiles for select
+to authenticated
+using ( true );
+
+
+----------------------------------------------------------------------------- 
+
+
+create or replace function public.handle_new_user()
+returns trigger as $$
+begin
+  insert into public.profiles (
+    id,
+    username,
+    full_name,
+    avatar_url,
+    is_setup
+  )
+  values (
+    new.id,
+    'user_' || substr(new.id::text, 1, 8),
+    coalesce(
+      new.raw_user_meta_data->>'full_name',
+      new.raw_user_meta_data->>'name'
+    ),
+    new.raw_user_meta_data->>'avatar_url',
+    false
+  );
+  return new;
+end;
+$$ language plpgsql security definer;
