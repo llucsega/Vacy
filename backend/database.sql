@@ -356,3 +356,36 @@ using (auth.uid() = user_id);
 create index recipes_created_at_idx on public.recipes (created_at desc);
 create index recipes_category_idx on public.recipes (category);
 create index recipes_is_public_idx on public.recipes (is_public);
+
+
+----------------------------------------------------------------------------- 
+
+
+create type recipe_category as enum (
+  'Esmorzar',
+  'Dinar',
+  'Sopar',
+  'Postres',
+  'Snacks'
+);
+
+
+----------------------------------------------------------------------------- 
+
+
+create type recipe_category as enum (
+  'breakfast',
+  'lunch',
+  'dinner',
+  'dessert'
+);
+
+
+-----------------------------------------------------------------------------
+
+
+alter table public.recipes
+add column category recipe_category not null;
+
+
+-----------------------------------------------------------------------------
