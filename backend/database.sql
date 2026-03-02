@@ -159,3 +159,200 @@ begin
   return new;
 end;
 $$ language plpgsql security definer;
+
+
+----------------------------------------------------------------------------- 
+
+
+-- =========================================================
+-- 1️⃣ Taula recipes
+-- =========================================================
+create table public.recipes (
+    id uuid primary key default gen_random_uuid(),
+    author_id uuid not null
+        references public.profiles(id)
+        on delete cascade,
+    title text not null,
+    description text not null,
+    cooking_time integer check (cooking_time > 0),
+    servings integer check (servings > 0),
+    calories integer check (calories >= 0),
+    image_url text,
+    ingredients jsonb not null,
+    steps jsonb not null,
+    category text not null,
+    is_public boolean default true,
+    is_ai_generated boolean default false,
+    created_at timestamptz default now(),
+    updated_at timestamptz default now()
+);
+
+-- Trigger updated_at per recipes
+create or replace function public.update_recipe_updated_at()
+returns trigger as $$
+begin
+    new.updated_at = now();
+    return new;
+end;
+$$ language plpgsql;
+
+drop trigger if exists set_recipe_updated_at on public.recipes;
+create trigger set_recipe_updated_at
+before update on public.recipes
+for each row
+execute procedure public.update_recipe_updated_at();
+
+-- Enable RLS i policies
+alter table public.recipes enable row level security;
+
+-- Select: només públiques o pròpies
+create policy "Users can view public recipes or own recipes"
+on public.recipes
+for select
+to authenticated
+using (
+    is_public = true
+    OR auth.uid() = author_id
+);
+
+-- Insert: només usuari autenticat pot crear les seves
+create policy "Users can insert own recipes"
+on public.recipes
+for insert
+to authenticated
+with check (auth.uid() = author_id);
+
+-- Update: només el propietari
+create policy "Users can update own recipes"
+on public.recipes
+for update
+to authenticated
+using (auth.uid() = author_id);
+
+-- Delete: només el propietari
+create policy "Users can delete own recipes"
+on public.recipes
+for delete
+to authenticated
+using (auth.uid() = author_id);
+
+-- =========================================================
+-- 2️⃣ Taula recipe_likes
+-- =========================================================
+create table public.recipe_likes (
+    user_id uuid references public.profiles(id) on delete cascade,
+    recipe_id uuid references public.recipes(id) on delete cascade,
+    created_at timestamptz default now(),
+    primary key (user_id, recipe_id)
+);
+
+alter table public.recipe_likes enable row level security;
+
+-- Select: només veure likes propis
+create policy "Users can view own likes"
+on public.recipe_likes
+for select
+to authenticated
+using (auth.uid() = user_id);
+
+-- Insert: només usuari autenticat pot likejar
+create policy "Users can insert own likes"
+on public.recipe_likes
+for insert
+to authenticated
+with check (auth.uid() = user_id);
+
+-- Delete: només usuari autenticat pot treure likes seus
+create policy "Users can delete own likes"
+on public.recipe_likes
+for delete
+to authenticated
+using (auth.uid() = user_id);
+
+-- =========================================================
+-- 3️⃣ Taula recipe_comments
+-- =========================================================
+create table public.recipe_comments (
+    id uuid primary key default gen_random_uuid(),
+    recipe_id uuid references public.recipes(id) on delete cascade,
+    author_id uuid references public.profiles(id) on delete cascade,
+    content text not null,
+    created_at timestamptz default now()
+);
+
+alter table public.recipe_comments enable row level security;
+
+-- Select: tothom pot veure comentaris de receptes públiques
+create policy "Users can view comments on public recipes"
+on public.recipe_comments
+for select
+to authenticated
+using (
+    exists (
+        select 1
+        from public.recipes r
+        where r.id = recipe_id
+        and (r.is_public = true OR auth.uid() = r.author_id)
+    )
+);
+
+-- Insert: només usuari autenticat pot comentar
+create policy "Users can insert own comments"
+on public.recipe_comments
+for insert
+to authenticated
+with check (auth.uid() = author_id);
+
+-- Update: només autor del comentari
+create policy "Users can update own comments"
+on public.recipe_comments
+for update
+to authenticated
+using (auth.uid() = author_id);
+
+-- Delete: només autor del comentari
+create policy "Users can delete own comments"
+on public.recipe_comments
+for delete
+to authenticated
+using (auth.uid() = author_id);
+
+-- =========================================================
+-- 4️⃣ Taula recipe_saves
+-- =========================================================
+create table public.recipe_saves (
+    user_id uuid references public.profiles(id) on delete cascade,
+    recipe_id uuid references public.recipes(id) on delete cascade,
+    created_at timestamptz default now(),
+    primary key (user_id, recipe_id)
+);
+
+alter table public.recipe_saves enable row level security;
+
+-- Select: només veus els teus guardats
+create policy "Users can view own saved recipes"
+on public.recipe_saves
+for select
+to authenticated
+using (auth.uid() = user_id);
+
+-- Insert: només sobre propis guardats
+create policy "Users can insert own saved recipes"
+on public.recipe_saves
+for insert
+to authenticated
+with check (auth.uid() = user_id);
+
+-- Delete: només sobre propis guardats
+create policy "Users can delete own saved recipes"
+on public.recipe_saves
+for delete
+to authenticated
+using (auth.uid() = user_id);
+
+-- =========================================================
+-- 5️⃣ Indexos mínims per mur i filtrat
+-- =========================================================
+create index recipes_created_at_idx on public.recipes (created_at desc);
+create index recipes_category_idx on public.recipes (category);
+create index recipes_is_public_idx on public.recipes (is_public);

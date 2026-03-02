@@ -21,7 +21,7 @@ function App() {
   if (loading) {
     return (
       <MobileWrapper>
-        <div className="h-screen w-full flex flex-col items-center justify-center bg-[#f5f0e8] p-6 text-center">
+        <div className="absolute inset-0 flex flex-col items-center justify-center bg-[#f5f0e8] p-6 text-center">
           {/* Un spinner discret i elegant */}
           <div className="w-10 h-10 border-4 border-[#3a2d22]/20 border-t-[#3a2d22] rounded-full animate-spin mb-4"></div>
           <span className="text-[#3a2d22] font-black text-lg animate-pulse tracking-tight">

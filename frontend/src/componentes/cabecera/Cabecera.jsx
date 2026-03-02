@@ -69,7 +69,7 @@ const Header = () => {
                 provider: 'google',
                 options: { 
                     redirectTo: window.location.origin,
-                    queryParams: { prompt: 'select_account' } // El "bonus" que vam dir!
+                    queryParams: { prompt: 'select_account' } 
                 }
               });
             }}

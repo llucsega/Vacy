@@ -69,7 +69,7 @@ export default function UsernameModal({ profile, onComplete }) {
 
   return (
     <div className="absolute inset-0 backdrop-brightness-50 flex items-center justify-center z-9999 overflow-hidden touch-none">
-      <div className="relative w-full h-full flex items-center justify-center p-6 -translate-y-30">
+      <div className="relative w-full h-full flex items-center justify-center p-6 -translate-y-50">
         
         <img 
           src={triaUsernameImg} 
